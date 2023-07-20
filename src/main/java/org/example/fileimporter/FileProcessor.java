@@ -1,9 +1,8 @@
-package fileimporter;
+package org.example.fileimporter;
 
-import Entity.Company;
-import mapper.CSVMapper;
-import mapper.Mapper;
-import mapper.MapperFactory;
+import org.example.Entity.Company;
+import org.example.mapper.Mapper;
+import org.example.mapper.MapperFactory;
 
 import java.io.IOException;
 import java.util.stream.Stream;

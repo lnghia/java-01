@@ -1,4 +1,4 @@
-package fileimporter;
+package org.example.fileimporter;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package util;
+package org.example.util;
 
 public class Converter {
     private static final Converter instance;

@@ -1,7 +1,7 @@
-package mapper;
+package org.example.mapper;
 
-import Entity.Company;
-import util.Converter;
+import org.example.Entity.Company;
+import org.example.util.Converter;
 
 public class CSVMapper implements Mapper {
     @Override

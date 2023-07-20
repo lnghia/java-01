@@ -1,7 +1,7 @@
-package service;
+package org.example.service;
 
-import Entity.Company;
-import fileimporter.FileProcessor;
+import org.example.Entity.Company;
+import org.example.fileimporter.FileProcessor;
 
 import java.io.IOException;
 import java.util.stream.Stream;

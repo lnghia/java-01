@@ -1,6 +1,6 @@
-package mapper;
+package org.example.mapper;
 
-import Entity.Company;
+import org.example.Entity.Company;
 
 public interface Mapper {
     Company lineToCompany(String line);

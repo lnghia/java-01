@@ -1,6 +1,6 @@
-package mapper;
+package org.example.mapper;
 
-import exception.NoCorrespondingMapperForFileExtension;
+import org.example.exception.NoCorrespondingMapperForFileExtension;
 
 public class MapperFactory {
     public static Mapper getMapper(String fileExtension) {
