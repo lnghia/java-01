@@ -1,18 +1,30 @@
 package org.example.fileimporter;
 
-import org.example.Entity.Company;
+import java.util.stream.Stream;
+import org.example.entity.Company;
+import org.example.exception.NoCorrespondingMapperForFileExtensionException;
 import org.example.mapper.Mapper;
 import org.example.mapper.MapperFactory;
-
-import java.io.IOException;
-import java.util.stream.Stream;
+import org.example.util.FileUtils;
+import org.example.util.Overwatch;
 
 public class FileProcessor {
-    public Stream<Company> process(String filePath, String fileExtension) throws IOException {
-        Stream<String> lines = FileReader.getInstance().readFile(filePath);
+  private FileProcessor() {}
 
-        Mapper mapper = MapperFactory.getMapper(fileExtension);
+  public static Stream<Company> process() {
+    String filePath = Overwatch.getInstance().getFilePath();
+    Stream<String> lines = FileReader.readFile(filePath);
+    String fileExtension = FileUtils.getExtensionByStringHandling(filePath).orElse("");
+    Mapper mapper;
 
-        return lines.map(String::trim).map(mapper::lineToCompany);
+    try {
+      mapper = MapperFactory.getMapper(fileExtension);
+    } catch (NoCorrespondingMapperForFileExtensionException exception) {
+      exception.printStackTrace();
+
+      return Stream.empty();
     }
+
+    return lines.skip(1).map(mapper::lineToCompany);
+  }
 }

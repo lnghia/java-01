@@ -2,21 +2,22 @@ package org.example.fileimporter;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
+import lombok.Getter;
 
+@Getter
 public class FileReader {
-    private static final FileReader instance;
 
-    static {
-        instance = new FileReader();
+  private FileReader() {}
+
+  public static Stream<String> readFile(String filePath) {
+    try {
+      return Files.lines(Paths.get(filePath));
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    public static FileReader getInstance() {
-        return instance;
-    }
-
-    public Stream<String> readFile(String filePath) throws IOException {
-        return Files.lines(Path.of(filePath));
-    }
+    return Stream.empty();
+  }
 }

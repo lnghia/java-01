@@ -1,29 +1,37 @@
 package org.example.service;
 
-import org.example.Entity.Company;
+import java.util.List;
+import java.util.stream.Stream;
+import org.example.entity.Company;
 import org.example.fileimporter.FileProcessor;
 
-import java.io.IOException;
-import java.util.stream.Stream;
-
+// @Slf4j
 public class CompanyService {
-    private final FileProcessor fileProcessor;
 
-    public CompanyService(FileProcessor fileProcessor) {
-        this.fileProcessor = fileProcessor;
-    }
+  public void calTotalCapitalIsHeadQuarterWithCountryIn(String country) {
+    Stream<Company> companyStream = FileProcessor.process();
 
-    public void countCapitalIsHeadQuarterWithCountryIn(String country) {
-        try {
-            Stream<Company> companyStream = fileProcessor.process("", "csv");
-            long result = companyStream
-                    .filter(Company::isHeadQuarter)
-                    .filter(company -> company.getCountry().equals("CH"))
-                    .count();
+    long result =
+        companyStream
+            .filter(Company::isHeadQuarter)
+            .filter(company -> company.getCountry().equals(country))
+            .map(Company::getCapital)
+            .reduce(0, Integer::sum);
+    companyStream.close();
 
-            System.out.println(result);
-        } catch (IOException e) {
-            System.out.println("There has been an error in an attempt to read file");
-        }
-    }
+    System.out.println(result);
+  }
+
+  public void printOutCompaniesInCountry(String country) {
+    Stream<Company> companyStream = FileProcessor.process();
+
+    List<String> result =
+        companyStream
+            .filter(company -> company.getCountry().equals(country))
+            .map(Company::getName)
+            .toList();
+    companyStream.close();
+
+    System.out.println(result);
+  }
 }
