@@ -1,37 +1,47 @@
 package org.example.service;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.example.entity.Company;
 import org.example.fileimporter.FileProcessor;
 
-// @Slf4j
-public class CompanyService {
+public class CompanyService implements Service {
 
-  public void calTotalCapitalIsHeadQuarterWithCountryIn(String country) {
-    Stream<Company> companyStream = FileProcessor.process();
+    private static final Predicate<Company> isHeadQuarterPredicate = Company::isHeadQuarter;
 
-    long result =
-        companyStream
-            .filter(Company::isHeadQuarter)
-            .filter(company -> company.getCountry().equals(country))
-            .map(Company::getCapital)
-            .reduce(0, Integer::sum);
-    companyStream.close();
+    private static Predicate<Company> isInCountryPredicate(String country) {
+        return company -> company.getCountry().equals(country);
+    }
 
-    System.out.println(result);
-  }
+    public void calTotalCapitalIsHeadQuarterWithCountryIn(String country) {
+        Stream<Company> companyStream = FileProcessor.process();
 
-  public void printOutCompaniesInCountry(String country) {
-    Stream<Company> companyStream = FileProcessor.process();
+        long result =
+                companyStream
+                        .filter(isHeadQuarterPredicate)
+                        .filter(isInCountryPredicate(country))
+                        .map(Company::getCapital)
+                        .reduce(0, Integer::sum);
 
-    List<String> result =
-        companyStream
-            .filter(company -> company.getCountry().equals(country))
-            .map(Company::getName)
-            .toList();
-    companyStream.close();
+        companyStream.close();
 
-    System.out.println(result);
-  }
+        System.out.println(result);
+    }
+
+    public void printOutCompaniesInCountry(String country) {
+        Stream<Company> companyStream = FileProcessor.process();
+
+        List<String> result =
+                companyStream
+                        .filter(isInCountryPredicate(country))
+                        .map(Company::getName)
+                        .collect(Collectors.toList());
+
+        companyStream.close();
+
+        System.out.println(result);
+    }
 }

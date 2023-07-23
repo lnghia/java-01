@@ -8,15 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Company {
-  private int id;
+    private int id;
 
-  private String country;
+    private String country;
 
-  private boolean isHeadQuarter;
+    private boolean isHeadQuarter;
 
-  private int capital;
+    private int capital;
 
-  private String name;
+    private String name;
 
-  private String foundation;
+    private String foundation;
 }
